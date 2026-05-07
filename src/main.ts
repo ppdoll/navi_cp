@@ -41,14 +41,40 @@ async function createApp() {
 }
 
 export default async function handler(request: Request, response: Response) {
+  const startedAt = Date.now();
+  const requestMethod = request.method;
+  const requestPath = request.url;
+
+  // Vercel Serverless invocation log
+  console.log(
+    `[serverless] start ${requestMethod} ${requestPath} at ${new Date(
+      startedAt,
+    ).toISOString()}`,
+  );
+
   if (!cachedHandler) {
+    console.log('[serverless] initializing Nest app for cold start');
     cachedHandler = (await createApp()) as (
       request: Request,
       response: Response,
     ) => Promise<unknown>;
   }
 
-  return cachedHandler(request, response);
+  try {
+    const result = await cachedHandler(request, response);
+    const elapsed = Date.now() - startedAt;
+    console.log(
+      `[serverless] done ${requestMethod} ${requestPath} status=${response.statusCode} durationMs=${elapsed}`,
+    );
+    return result;
+  } catch (error) {
+    const elapsed = Date.now() - startedAt;
+    console.error(
+      `[serverless] error ${requestMethod} ${requestPath} durationMs=${elapsed}`,
+      error,
+    );
+    throw error;
+  }
 }
 
 async function bootstrap() {
