@@ -3,8 +3,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { ExpressAdapter } from '@nestjs/platform-express';
-import express, { type Request, type Response } from 'express';
-import serverless from 'serverless-http';
+import express, { type Express, type Request, type Response } from 'express';
 import { AppModule } from './modules/app.module';
 
 declare const module: {
@@ -14,11 +13,10 @@ declare const module: {
   };
 };
 
-let cachedHandler:
-  | ((request: Request, response: Response) => Promise<unknown>)
-  | undefined;
+let cachedApp: Express | undefined;
+let bootstrapPromise: Promise<Express> | undefined;
 
-async function createApp() {
+async function createApp(): Promise<Express> {
   const expressApp = express();
   const app = await NestFactory.create(
     AppModule,
@@ -37,44 +35,17 @@ async function createApp() {
 
   await app.init();
 
-  return serverless(expressApp);
+  return expressApp;
 }
 
 export default async function handler(request: Request, response: Response) {
-  const startedAt = Date.now();
-  const requestMethod = request.method;
-  const requestPath = request.url;
-
-  // Vercel Serverless invocation log
-  console.log(
-    `[serverless] start ${requestMethod} ${requestPath} at ${new Date(
-      startedAt,
-    ).toISOString()}`,
-  );
-
-  if (!cachedHandler) {
-    console.log('[serverless] initializing Nest app for cold start');
-    cachedHandler = (await createApp()) as (
-      request: Request,
-      response: Response,
-    ) => Promise<unknown>;
+  if (!cachedApp) {
+    if (!bootstrapPromise) {
+      bootstrapPromise = createApp();
+    }
+    cachedApp = await bootstrapPromise;
   }
-
-  try {
-    const result = await cachedHandler(request, response);
-    const elapsed = Date.now() - startedAt;
-    console.log(
-      `[serverless] done ${requestMethod} ${requestPath} status=${response.statusCode} durationMs=${elapsed}`,
-    );
-    return result;
-  } catch (error) {
-    const elapsed = Date.now() - startedAt;
-    console.error(
-      `[serverless] error ${requestMethod} ${requestPath} durationMs=${elapsed}`,
-      error,
-    );
-    throw error;
-  }
+  return cachedApp(request, response);
 }
 
 async function bootstrap() {
