@@ -8,3 +8,5 @@ frontend/node_modules/
 frontend/.env.local
 src/config/env/.local.env
 src/config/env/.live.env
+.env
+.env.*
