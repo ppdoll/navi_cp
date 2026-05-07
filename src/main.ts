@@ -98,6 +98,6 @@ async function bootstrap() {
   console.log(`Port: ${port}`);
 }
 
-if (require.main === module) {
+if (require.main === module && !process.env.VERCEL) {
   void bootstrap();
 }
