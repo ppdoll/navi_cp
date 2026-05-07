@@ -1,0 +1,56 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Nest: Debug (npm start:debug)",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "start:debug"],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "restart": true,
+      "env": {
+        "NODE_ENV": "local",
+        "PORT": "3999"
+      }
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Frontend: Debug (npm run dev)",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "cwd": "${workspaceFolder}/frontend",
+      "console": "integratedTerminal",
+      "restart": true,
+      "env": {
+        "NODE_ENV": "development",
+        "FRONTEND_PORT": "3998",
+        "NEXT_PUBLIC_API_BASE_URL": "http://127.0.0.1:3999"
+      }
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Nest: Debug Current Build (dist/main.js)",
+      "program": "${workspaceFolder}/dist/main.js",
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "env": {
+        "NODE_ENV": "local"
+      },
+      "preLaunchTask": "npm: build"
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Full Stack: Debug Backend + Frontend",
+      "configurations": [
+        "Nest: Debug (npm start:debug)",
+        "Frontend: Debug (npm run dev)"
+      ],
+      "stopAll": true
+    }
+  ]
+}
