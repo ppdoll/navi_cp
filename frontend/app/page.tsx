@@ -1,7 +1,7 @@
 'use client';
 
-import { FormEvent, useEffect, useMemo, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
+import { FormEvent, useEffect, useMemo, useRef, useState } from 'react';
 
 type Provider = 'NAVER' | 'KAKAO' | 'TMAP';
 type ProviderView = Provider | 'ALL';
@@ -95,13 +95,11 @@ function AdsenseUnit() {
     try {
       (window.adsbygoogle = window.adsbygoogle || []).push({});
     } catch {
-      // Ignore duplicate/late ad initialization errors in development.
+      // Ignore duplicate/late ad initialization errors.
     }
   }, [slot]);
 
-  if (!slot) {
-    return null;
-  }
+  if (!slot) return null;
 
   return (
     <section className="panel" aria-label="advertisement">
@@ -135,9 +133,7 @@ function buildExternalLinks(
   origin: SelectedPlace | null,
   destination: SelectedPlace | null,
 ) {
-  if (!origin || !destination) {
-    return null;
-  }
+  if (!origin || !destination) return null;
 
   const oName = encodeURIComponent(origin.label);
   const dName = encodeURIComponent(destination.label);
@@ -166,13 +162,10 @@ function buildExternalLinks(
 }
 
 function openAppWithFallback(appUrl: string, siteUrl?: string) {
-  if (typeof window === 'undefined') {
-    return;
-  }
+  if (typeof window === 'undefined') return;
 
   const startedAt = Date.now();
   const fallback = window.setTimeout(() => {
-    // If app launch failed and browser is still visible, move to web fallback.
     if (!document.hidden && siteUrl) {
       window.location.href = siteUrl;
     }
@@ -185,7 +178,6 @@ function openAppWithFallback(appUrl: string, siteUrl?: string) {
   };
 
   const onVisibilityChange = () => {
-    // If page becomes hidden quickly, app launch likely succeeded.
     if (document.hidden && Date.now() - startedAt < 4000) {
       clear();
     }
@@ -198,7 +190,7 @@ function openAppWithFallback(appUrl: string, siteUrl?: string) {
 
 export default function Page() {
   const [originName, setOriginName] = useState('서울시청');
-  const [destinationName, setDestinationName] = useState('판교역');
+  const [destinationName, setDestinationName] = useState('양천로 656');
   const [originCandidates, setOriginCandidates] = useState<SearchAddressItem[]>([]);
   const [destinationCandidates, setDestinationCandidates] = useState<
     SearchAddressItem[]
@@ -291,6 +283,7 @@ export default function Page() {
       setError('출발지와 도착지를 검색 목록에서 선택해 주세요.');
       return;
     }
+
     setLoading(true);
     setError(null);
 
@@ -329,8 +322,9 @@ export default function Page() {
   return (
     <main className="page">
       <section className="hero">
+        <p className="eyebrow">KR Tools · Navi</p>
         <h1>길찾기 비교 서비스</h1>
-        <p>위치명으로 검색하고, 지도에서 경로를 비교해 보세요.</p>
+        <p>출발지와 도착지를 검색하고 3개 지도 앱의 경로를 한 번에 비교하세요.</p>
       </section>
 
       <section className="panel">
@@ -380,7 +374,7 @@ export default function Page() {
                 <input
                   value={destinationName}
                   onChange={(event) => setDestinationName(event.target.value)}
-                  placeholder="예: 판교역, 잠실역"
+                  placeholder="예: 양천로 656, 여의도"
                 />
                 <button type="button" onClick={() => searchPlace('destination')}>
                   {searchingDestination ? '검색 중...' : '검색'}
@@ -415,8 +409,8 @@ export default function Page() {
             경로 옵션
             <select value={option} onChange={(event) => setOption(event.target.value)}>
               <option value="RECOMMENDED">추천</option>
-              <option value="FASTEST">최단시간</option>
-              <option value="FREE">무료우선</option>
+              <option value="FASTEST">최단 시간</option>
+              <option value="FREE">무료 우선</option>
               <option value="BIG_ROAD">큰길 우선</option>
             </select>
           </label>
@@ -432,7 +426,7 @@ export default function Page() {
       {result ? (
         <section className="results">
           <div className="summary">
-            <h2>요약</h2>
+            <h2>비교 요약</h2>
             <p>
               가장 빠른 경로: <strong>{result.summary.fastestProvider ?? '-'}</strong>
             </p>
@@ -547,14 +541,14 @@ export default function Page() {
               </article>
             ))}
           </div>
+
           <AdsenseUnit />
         </section>
       ) : null}
 
-      <section className="panel">
+      <section className="panel panel-links">
         <p>
-          <a href="/about">서비스 소개</a> |{' '}
-          <a href="/privacy">개인정보처리방침</a>
+          <a href="/about">서비스 소개</a> | <a href="/privacy">개인정보처리방침</a>
         </p>
       </section>
     </main>

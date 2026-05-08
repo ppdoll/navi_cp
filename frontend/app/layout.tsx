@@ -1,7 +1,18 @@
 import type { Metadata } from 'next';
+import { Geist, Geist_Mono } from 'next/font/google';
 import Script from 'next/script';
 import './globals.css';
 import 'leaflet/dist/leaflet.css';
+
+const geistSans = Geist({
+  subsets: ['latin'],
+  variable: '--font-geist-sans',
+});
+
+const geistMono = Geist_Mono({
+  subsets: ['latin'],
+  variable: '--font-geist-mono',
+});
 
 const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL?.trim() || 'http://127.0.0.1:3998';
@@ -41,7 +52,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="ko">
+    <html lang="ko" className={`${geistSans.variable} ${geistMono.variable}`}>
       <body>
         <Script
           async
