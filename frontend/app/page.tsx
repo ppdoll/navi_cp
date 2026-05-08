@@ -550,6 +550,13 @@ export default function Page() {
           <AdsenseUnit />
         </section>
       ) : null}
+
+      <section className="panel">
+        <p>
+          <a href="/about">서비스 소개</a> |{' '}
+          <a href="/privacy">개인정보처리방침</a>
+        </p>
+      </section>
     </main>
   );
 }
