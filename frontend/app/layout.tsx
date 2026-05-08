@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Script from 'next/script';
 import './globals.css';
 import 'leaflet/dist/leaflet.css';
 
@@ -41,7 +42,15 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="ko">
-      <body>{children}</body>
+      <body>
+        <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5300900783303783"
+          strategy="afterInteractive"
+          crossOrigin="anonymous"
+        />
+        {children}
+      </body>
     </html>
   );
 }
