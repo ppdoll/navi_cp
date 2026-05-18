@@ -118,14 +118,25 @@ function AdsenseUnit() {
 
 function KakaoAdUnit() {
   return (
-    <section className="panel" aria-label="kakao-advertisement">
-      <ins
-        className="kakao_ad_area"
-        style={{ display: 'none' }}
-        data-ad-unit="DAN-J9hgvTxvzgstoydr"
-        data-ad-width="300"
-        data-ad-height="250"
-      />
+    <section className="panel kakao-ad-panel" aria-label="kakao-advertisement">
+      <div className="kakao-ad-slot kakao-ad-slot-desktop">
+        <ins
+          className="kakao_ad_area"
+          style={{ display: 'none' }}
+          data-ad-unit="DAN-rLxDqF6ZOAufoZc4"
+          data-ad-width="160"
+          data-ad-height="600"
+        />
+      </div>
+      <div className="kakao-ad-slot kakao-ad-slot-mobile">
+        <ins
+          className="kakao_ad_area"
+          style={{ display: 'none' }}
+          data-ad-unit="DAN-AlXb06IWlDddaBRT"
+          data-ad-width="320"
+          data-ad-height="480"
+        />
+      </div>
     </section>
   );
 }

@@ -340,6 +340,19 @@ button:disabled {
   overflow: auto;
 }
 
+.kakao-ad-panel {
+  padding: 1rem;
+}
+
+.kakao-ad-slot {
+  display: flex;
+  justify-content: center;
+}
+
+.kakao-ad-slot-mobile {
+  display: none;
+}
+
 .panel-links {
   padding: 0.85rem 1rem;
   background: rgba(255, 255, 255, 0.82);
@@ -357,5 +370,13 @@ button:disabled {
 
   .inline {
     grid-template-columns: 1fr;
+  }
+
+  .kakao-ad-slot-desktop {
+    display: none;
+  }
+
+  .kakao-ad-slot-mobile {
+    display: flex;
   }
 }
