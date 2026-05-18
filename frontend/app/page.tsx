@@ -116,6 +116,20 @@ function AdsenseUnit() {
   );
 }
 
+function KakaoAdUnit() {
+  return (
+    <section className="panel" aria-label="kakao-advertisement">
+      <ins
+        className="kakao_ad_area"
+        style={{ display: 'none' }}
+        data-ad-unit="DAN-J9hgvTxvzgstoydr"
+        data-ad-width="300"
+        data-ad-height="250"
+      />
+    </section>
+  );
+}
+
 function toKm(distanceMeters: number | null) {
   if (distanceMeters === null) return '-';
   return `${(distanceMeters / 1000).toFixed(1)} km`;
@@ -543,6 +557,7 @@ export default function Page() {
           </div>
 
           <AdsenseUnit />
+          <KakaoAdUnit />
         </section>
       ) : null}
 

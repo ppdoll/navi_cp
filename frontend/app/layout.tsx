@@ -60,6 +60,11 @@ export default function RootLayout({
           strategy="afterInteractive"
           crossOrigin="anonymous"
         />
+        <Script
+          async
+          src="https://t1.kakaocdn.net/kas/static/ba.min.js"
+          strategy="afterInteractive"
+        />
         {children}
       </body>
     </html>
