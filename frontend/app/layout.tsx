@@ -56,12 +56,6 @@ export default function RootLayout({
       <body>
         <Script
           async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5300900783303783"
-          strategy="afterInteractive"
-          crossOrigin="anonymous"
-        />
-        <Script
-          async
           src="https://t1.kakaocdn.net/kas/static/ba.min.js"
           strategy="afterInteractive"
         />

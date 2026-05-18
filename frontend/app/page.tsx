@@ -1,7 +1,7 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import { FormEvent, useEffect, useMemo, useRef, useState } from 'react';
+import { FormEvent, useMemo, useState } from 'react';
 
 type Provider = 'NAVER' | 'KAKAO' | 'TMAP';
 type ProviderView = Provider | 'ALL';
@@ -61,12 +61,6 @@ type SelectedPlace = {
   longitude: string;
 };
 
-declare global {
-  interface Window {
-    adsbygoogle?: unknown[];
-  }
-}
-
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_BASE_URL ?? 'http://127.0.0.1:3999';
 
@@ -82,39 +76,6 @@ const providerColor: Record<Provider, string> = {
   KAKAO: '#f2c200',
   TMAP: '#2c7be5',
 };
-
-function AdsenseUnit() {
-  const adRef = useRef<HTMLModElement | null>(null);
-  const slot = process.env.NEXT_PUBLIC_ADSENSE_SLOT?.trim();
-
-  useEffect(() => {
-    if (!slot || !adRef.current || typeof window === 'undefined') {
-      return;
-    }
-
-    try {
-      (window.adsbygoogle = window.adsbygoogle || []).push({});
-    } catch {
-      // Ignore duplicate/late ad initialization errors.
-    }
-  }, [slot]);
-
-  if (!slot) return null;
-
-  return (
-    <section className="panel" aria-label="advertisement">
-      <ins
-        ref={adRef}
-        className="adsbygoogle"
-        style={{ display: 'block' }}
-        data-ad-client="ca-pub-5300900783303783"
-        data-ad-slot={slot}
-        data-ad-format="auto"
-        data-full-width-responsive="true"
-      />
-    </section>
-  );
-}
 
 function KakaoAdUnit() {
   return (
@@ -566,8 +527,6 @@ export default function Page() {
               </article>
             ))}
           </div>
-
-          <AdsenseUnit />
           <KakaoAdUnit />
         </section>
       ) : null}
