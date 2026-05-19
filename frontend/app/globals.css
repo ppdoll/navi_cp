@@ -344,13 +344,22 @@ button:disabled {
   padding: 1rem;
 }
 
+.kakao-ad-group {
+  display: grid;
+  gap: 1rem;
+}
+
+.kakao-ad-group-mobile {
+  display: none;
+}
+
 .kakao-ad-slot {
   display: flex;
   justify-content: center;
 }
 
-.kakao-ad-slot-mobile {
-  display: none;
+.kakao-ad-slot-desktop-horizontal {
+  overflow-x: auto;
 }
 
 .panel-links {
@@ -372,11 +381,11 @@ button:disabled {
     grid-template-columns: 1fr;
   }
 
-  .kakao-ad-slot-desktop {
+  .kakao-ad-group-desktop {
     display: none;
   }
 
-  .kakao-ad-slot-mobile {
-    display: flex;
+  .kakao-ad-group-mobile {
+    display: grid;
   }
 }
