@@ -1,11 +1,6 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  experimental: {
-    outputFileTracingIncludes: {
-      '/festival': ['./data/festivals.json'],
-    },
-  },
   webpack: (config, { isServer, nextRuntime }) => {
     const needsNodeFallback = !isServer || nextRuntime === 'edge';
     if (needsNodeFallback) {
