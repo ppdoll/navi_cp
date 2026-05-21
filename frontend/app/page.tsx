@@ -555,7 +555,9 @@ export default function Page() {
 
       <section className="panel panel-links">
         <p>
-          <a href="/about">서비스 소개</a> | <a href="/privacy">개인정보처리방침</a>
+          <a href="/festival">전국 공연·행사</a> |{' '}
+          <a href="/about">서비스 소개</a> |{' '}
+          <a href="/privacy">개인정보처리방침</a>
         </p>
       </section>
     </main>
