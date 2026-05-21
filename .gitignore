@@ -6,7 +6,6 @@ coverage/
 frontend/.next/
 frontend/node_modules/
 frontend/.env.local
-frontend/data/festivals.json
 src/config/env/.local.env
 src/config/env/.live.env
 .env

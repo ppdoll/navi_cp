@@ -156,6 +156,6 @@ async function main() {
 }
 
 main().catch((error) => {
-  console.error('[festival cache] failed:', error?.message ?? error);
-  process.exit(1);
+  // Warn only — don't exit 1 so the build continues with whatever cache exists
+  console.warn('[festival cache] failed (build will continue):', error?.message ?? error);
 });
