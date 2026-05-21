@@ -1,7 +1,6 @@
 import 'server-only';
 import fs from 'fs';
 import path from 'path';
-import { fileURLToPath } from 'url';
 
 export type CachedFestivalItem = {
   eventNm: string;
@@ -45,9 +44,8 @@ const MAX_PAGES = 50;
 const REQUEST_TIMEOUT_MS = 30_000;
 const RETRY_LIMIT = 3;
 
-const __filename = fileURLToPath(import.meta.url);
-const FRONTEND_ROOT = path.resolve(path.dirname(__filename), '..');
-export const CACHE_PATH = path.join(FRONTEND_ROOT, 'data', 'festivals.json');
+// process.cwd() is the Next.js project root in both dev and Vercel runtime
+export const CACHE_PATH = path.join(process.cwd(), 'data', 'festivals.json');
 
 function describeError(error: unknown): string {
   if (!(error instanceof Error)) return String(error);
@@ -197,8 +195,12 @@ export function readCache(): CachePayload | null {
 }
 
 export function writeCache(payload: CachePayload): void {
-  fs.mkdirSync(path.dirname(CACHE_PATH), { recursive: true });
-  fs.writeFileSync(CACHE_PATH, JSON.stringify(payload), 'utf8');
+  try {
+    fs.mkdirSync(path.dirname(CACHE_PATH), { recursive: true });
+    fs.writeFileSync(CACHE_PATH, JSON.stringify(payload), 'utf8');
+  } catch {
+    // Vercel runtime filesystem is read-only; cache lives in memory only
+  }
 }
 
 let pendingBootstrap: Promise<CachePayload> | null = null;
