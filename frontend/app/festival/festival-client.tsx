@@ -1,7 +1,7 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 export type FestivalItem = {
   eventNm: string;
@@ -39,6 +39,18 @@ const FestivalMap = dynamic(() => import('./festival-map'), { ssr: false });
 const PAGE_SIZE = 30;
 
 function KakaoAdUnit() {
+  useEffect(() => {
+    // ba.min.js runs once on initial page load; re-append on SPA navigation so
+    // new <ins> elements on this page are picked up.
+    const script = document.createElement('script');
+    script.src = '//t1.kakaocdn.net/kas/static/ba.min.js';
+    script.async = true;
+    document.body.appendChild(script);
+    return () => {
+      try { document.body.removeChild(script); } catch {}
+    };
+  }, []);
+
   return (
     <section className="panel kakao-ad-panel" aria-label="kakao-advertisement">
       <div className="kakao-ad-group kakao-ad-group-desktop">
