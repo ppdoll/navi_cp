@@ -296,12 +296,8 @@ export default function Page() {
         <p>출발지와 도착지를 검색하고 3개 지도 앱의 경로를 한 번에 비교하세요.</p>
       </section>
 
-      {/* 제목 아래: PC 가로 / 모바일 세로 */}
+      {/* 제목 아래: 모바일 세로만 (PC 가로는 ID 중복 방지를 위해 하단에만 배치) */}
       <div className="ad-after-hero">
-        <div className="ad-pc-only">
-          <ins className="kakao_ad_area" style={{ display: 'none' }}
-               data-ad-unit="DAN-rgs4SQJmvCt2NxzL" data-ad-width="728" data-ad-height="90" />
-        </div>
         <div className="ad-mobile-only">
           <ins className="kakao_ad_area" style={{ display: 'none' }}
                data-ad-unit="DAN-jQhuqQRXYEQCm28i" data-ad-width="320" data-ad-height="480" />
@@ -545,11 +541,7 @@ export default function Page() {
         </p>
       </section>
 
-      {/* PC 양쪽 세로 (viewport ≥ 1480px에서만 표시) */}
-      <div className="ad-sidebar-left">
-        <ins className="kakao_ad_area" style={{ display: 'none' }}
-             data-ad-unit="DAN-DFaroiHW07bkmjti" data-ad-width="160" data-ad-height="600" />
-      </div>
+      {/* PC 우측 세로 (viewport ≥ 1480px에서만 표시) */}
       <div className="ad-sidebar-right">
         <ins className="kakao_ad_area" style={{ display: 'none' }}
              data-ad-unit="DAN-DFaroiHW07bkmjti" data-ad-width="160" data-ad-height="600" />
