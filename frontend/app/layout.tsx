@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
-import Script from 'next/script';
 import './globals.css';
 import 'leaflet/dist/leaflet.css';
 
@@ -54,11 +53,6 @@ export default function RootLayout({
   return (
     <html lang="ko" className={`${geistSans.variable} ${geistMono.variable}`}>
       <body>
-        <Script
-          async
-          src="https://t1.kakaocdn.net/kas/static/ba.min.js"
-          strategy="afterInteractive"
-        />
         {children}
       </body>
     </html>
