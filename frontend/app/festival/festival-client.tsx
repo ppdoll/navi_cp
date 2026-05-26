@@ -38,6 +38,53 @@ const FestivalMap = dynamic(() => import('./festival-map'), { ssr: false });
 
 const PAGE_SIZE = 30;
 
+function KakaoAdUnit() {
+  return (
+    <section className="panel kakao-ad-panel" aria-label="kakao-advertisement">
+      <div className="kakao-ad-group kakao-ad-group-desktop">
+        <div className="kakao-ad-slot kakao-ad-slot-desktop-horizontal">
+          <ins
+            className="kakao_ad_area"
+            style={{ display: 'none' }}
+            data-ad-unit="DAN-rgs4SQJmvCt2NxzL"
+            data-ad-width="728"
+            data-ad-height="90"
+          />
+        </div>
+        <div className="kakao-ad-slot kakao-ad-slot-desktop-vertical">
+          <ins
+            className="kakao_ad_area"
+            style={{ display: 'none' }}
+            data-ad-unit="DAN-DFaroiHW07bkmjti"
+            data-ad-width="160"
+            data-ad-height="600"
+          />
+        </div>
+      </div>
+      <div className="kakao-ad-group kakao-ad-group-mobile">
+        <div className="kakao-ad-slot kakao-ad-slot-mobile-horizontal">
+          <ins
+            className="kakao_ad_area"
+            style={{ display: 'none' }}
+            data-ad-unit="DAN-t08hjMXUx8XWGLxl"
+            data-ad-width="320"
+            data-ad-height="100"
+          />
+        </div>
+        <div className="kakao-ad-slot kakao-ad-slot-mobile-vertical">
+          <ins
+            className="kakao_ad_area"
+            style={{ display: 'none' }}
+            data-ad-unit="DAN-jQhuqQRXYEQCm28i"
+            data-ad-width="320"
+            data-ad-height="480"
+          />
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function keyFor(item: FestivalItem, idx: number) {
   return `${item.eventNm}-${item.eventStartDate}-${idx}`;
 }
@@ -373,6 +420,8 @@ export default function FestivalClient({
           </button>
         </section>
       ) : null}
+
+      <KakaoAdUnit />
 
       <section className="panel panel-links">
         <p>
