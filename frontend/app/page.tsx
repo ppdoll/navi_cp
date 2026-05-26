@@ -1,7 +1,7 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import { FormEvent, useMemo, useState } from 'react';
+import { FormEvent, useEffect, useMemo, useState } from 'react';
 
 type Provider = 'NAVER' | 'KAKAO' | 'TMAP';
 type ProviderView = Provider | 'ALL';
@@ -76,53 +76,6 @@ const providerColor: Record<Provider, string> = {
   KAKAO: '#f2c200',
   TMAP: '#2c7be5',
 };
-
-function KakaoAdUnit() {
-  return (
-    <section className="panel kakao-ad-panel" aria-label="kakao-advertisement">
-      <div className="kakao-ad-group kakao-ad-group-desktop">
-        <div className="kakao-ad-slot kakao-ad-slot-desktop-horizontal">
-          <ins
-            className="kakao_ad_area"
-            style={{ display: 'none' }}
-            data-ad-unit="DAN-rgs4SQJmvCt2NxzL"
-            data-ad-width="728"
-            data-ad-height="90"
-          />
-        </div>
-        <div className="kakao-ad-slot kakao-ad-slot-desktop-vertical">
-          <ins
-            className="kakao_ad_area"
-            style={{ display: 'none' }}
-            data-ad-unit="DAN-DFaroiHW07bkmjti"
-            data-ad-width="160"
-            data-ad-height="600"
-          />
-        </div>
-      </div>
-      <div className="kakao-ad-group kakao-ad-group-mobile">
-        <div className="kakao-ad-slot kakao-ad-slot-mobile-horizontal">
-          <ins
-            className="kakao_ad_area"
-            style={{ display: 'none' }}
-            data-ad-unit="DAN-t08hjMXUx8XWGLxl"
-            data-ad-width="320"
-            data-ad-height="100"
-          />
-        </div>
-        <div className="kakao-ad-slot kakao-ad-slot-mobile-vertical">
-          <ins
-            className="kakao_ad_area"
-            style={{ display: 'none' }}
-            data-ad-unit="DAN-jQhuqQRXYEQCm28i"
-            data-ad-width="320"
-            data-ad-height="480"
-          />
-        </div>
-      </div>
-    </section>
-  );
-}
 
 function toKm(distanceMeters: number | null) {
   if (distanceMeters === null) return '-';
@@ -213,6 +166,14 @@ export default function Page() {
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<CompareResponse | null>(null);
   const [selectedProvider, setSelectedProvider] = useState<ProviderView>('ALL');
+
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = '//t1.kakaocdn.net/kas/static/ba.min.js';
+    script.async = true;
+    document.body.appendChild(script);
+    return () => { try { document.body.removeChild(script); } catch {} };
+  }, []);
 
   const visibleRoutes = useMemo(() => {
     if (!result) return [];
@@ -334,6 +295,18 @@ export default function Page() {
         <h1>길찾기 비교 서비스</h1>
         <p>출발지와 도착지를 검색하고 3개 지도 앱의 경로를 한 번에 비교하세요.</p>
       </section>
+
+      {/* 제목 아래: PC 가로 / 모바일 세로 */}
+      <div className="ad-after-hero">
+        <div className="ad-pc-only">
+          <ins className="kakao_ad_area" style={{ display: 'none' }}
+               data-ad-unit="DAN-rgs4SQJmvCt2NxzL" data-ad-width="728" data-ad-height="90" />
+        </div>
+        <div className="ad-mobile-only">
+          <ins className="kakao_ad_area" style={{ display: 'none' }}
+               data-ad-unit="DAN-jQhuqQRXYEQCm28i" data-ad-width="320" data-ad-height="480" />
+        </div>
+      </div>
 
       <section className="panel">
         <form className="form" onSubmit={onSubmit}>
@@ -549,9 +522,20 @@ export default function Page() {
               </article>
             ))}
           </div>
-          <KakaoAdUnit />
         </section>
       ) : null}
+
+      {/* 가장 아래: PC 가로 / 모바일 가로 */}
+      <div className="ad-bottom">
+        <div className="ad-pc-only">
+          <ins className="kakao_ad_area" style={{ display: 'none' }}
+               data-ad-unit="DAN-rgs4SQJmvCt2NxzL" data-ad-width="728" data-ad-height="90" />
+        </div>
+        <div className="ad-mobile-only">
+          <ins className="kakao_ad_area" style={{ display: 'none' }}
+               data-ad-unit="DAN-t08hjMXUx8XWGLxl" data-ad-width="320" data-ad-height="100" />
+        </div>
+      </div>
 
       <section className="panel panel-links">
         <p>
@@ -560,6 +544,16 @@ export default function Page() {
           <a href="/privacy">개인정보처리방침</a>
         </p>
       </section>
+
+      {/* PC 양쪽 세로 (viewport ≥ 1480px에서만 표시) */}
+      <div className="ad-sidebar-left">
+        <ins className="kakao_ad_area" style={{ display: 'none' }}
+             data-ad-unit="DAN-DFaroiHW07bkmjti" data-ad-width="160" data-ad-height="600" />
+      </div>
+      <div className="ad-sidebar-right">
+        <ins className="kakao_ad_area" style={{ display: 'none' }}
+             data-ad-unit="DAN-DFaroiHW07bkmjti" data-ad-width="160" data-ad-height="600" />
+      </div>
     </main>
   );
 }

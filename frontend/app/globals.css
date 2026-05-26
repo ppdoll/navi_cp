@@ -340,26 +340,36 @@ button:disabled {
   overflow: auto;
 }
 
-.kakao-ad-panel {
-  padding: 1rem;
-}
-
-.kakao-ad-group {
-  display: grid;
-  gap: 1rem;
-}
-
-.kakao-ad-group-mobile {
-  display: none;
-}
-
-.kakao-ad-slot {
+/* --- Kakao ad placements --- */
+.ad-after-hero,
+.ad-bottom {
   display: flex;
   justify-content: center;
+  padding: 0.25rem 0;
 }
 
-.kakao-ad-slot-desktop-horizontal {
-  overflow-x: auto;
+.ad-pc-only { display: none; }
+.ad-mobile-only { display: flex; justify-content: center; }
+
+.ad-sidebar-left,
+.ad-sidebar-right {
+  display: none;
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 90;
+}
+.ad-sidebar-left  { left: 0; }
+.ad-sidebar-right { right: 0; }
+
+@media (min-width: 721px) {
+  .ad-pc-only     { display: flex; justify-content: center; }
+  .ad-mobile-only { display: none; }
+}
+
+@media (min-width: 1480px) {
+  .ad-sidebar-left,
+  .ad-sidebar-right { display: block; }
 }
 
 .panel-links {
@@ -550,14 +560,6 @@ button:disabled {
 
   .inline {
     grid-template-columns: 1fr;
-  }
-
-  .kakao-ad-group-desktop {
-    display: none;
-  }
-
-  .kakao-ad-group-mobile {
-    display: grid;
   }
 
   .festival-grid {
