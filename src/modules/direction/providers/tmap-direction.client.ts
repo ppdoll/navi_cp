@@ -22,6 +22,8 @@ type TmapRouteResponse = {
       totalDistance?: number;
       totalTime?: number;
       totalFare?: number;
+      roadType?: number;
+      distance?: number;
     };
   }>;
 };
@@ -88,6 +90,7 @@ export class TmapDirectionClient extends AbstractDirectionClient {
       const durationSeconds = summary?.totalTime ?? null;
       const distanceMeters = summary?.totalDistance ?? null;
       const tollFare = summary?.totalFare ?? null;
+      const highwayRatio = this.calcHighwayRatio(response.data, distanceMeters);
       const pathCoordinates = this.extractPathCoordinates(response.data);
 
       return {
@@ -98,6 +101,7 @@ export class TmapDirectionClient extends AbstractDirectionClient {
             : Number((durationSeconds / 60).toFixed(1)),
         distanceMeters,
         tollFare,
+        highwayRatio,
         option: input.option,
         status: durationSeconds === null ? 'request_failed' : 'ok',
         message:
@@ -141,6 +145,7 @@ export class TmapDirectionClient extends AbstractDirectionClient {
       durationMinutes: null,
       distanceMeters: null,
       tollFare: null,
+      highwayRatio: null,
       option,
       status,
       message,
@@ -173,6 +178,7 @@ export class TmapDirectionClient extends AbstractDirectionClient {
       durationMinutes: null,
       distanceMeters: null,
       tollFare: null,
+      highwayRatio: null,
       option,
       status: 'request_failed',
       message: providerMessage,
@@ -189,6 +195,22 @@ export class TmapDirectionClient extends AbstractDirectionClient {
         },
       },
     };
+  }
+
+  // roadType 1=고속도로
+  private calcHighwayRatio(
+    payload: TmapRouteResponse,
+    totalDistance: number | null,
+  ): number | null {
+    if (!totalDistance || totalDistance === 0) return null;
+    let highwayDistance = 0;
+    for (const feature of payload.features ?? []) {
+      if (feature.geometry?.type !== 'LineString') continue;
+      if (feature.properties?.roadType === 1) {
+        highwayDistance += feature.properties.distance ?? 0;
+      }
+    }
+    return Math.round((highwayDistance / totalDistance) * 1000) / 10;
   }
 
   private extractPathCoordinates(
