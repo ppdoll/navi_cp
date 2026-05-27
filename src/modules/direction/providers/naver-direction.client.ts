@@ -20,6 +20,7 @@ type NaverRouteResponse = {
       summary?: {
         distance?: number;
         duration?: number;
+        tollFare?: number;
       };
     }>
   >;
@@ -73,6 +74,7 @@ export class NaverDirectionClient extends AbstractDirectionClient {
       const route = response.data.route?.[option]?.[0];
       const durationMs = route?.summary?.duration ?? null;
       const distanceMeters = route?.summary?.distance ?? null;
+      const tollFare = route?.summary?.tollFare ?? null;
       const pathCoordinates =
         route?.path?.map((point) => [point[1], point[0]] as [number, number]) ?? [];
 
@@ -83,6 +85,7 @@ export class NaverDirectionClient extends AbstractDirectionClient {
             ? null
             : Number((durationMs / 60000).toFixed(1)),
         distanceMeters,
+        tollFare,
         option: input.option,
         status: durationMs === null ? 'request_failed' : 'ok',
         message:
@@ -125,6 +128,7 @@ export class NaverDirectionClient extends AbstractDirectionClient {
       provider: MapProvider.NAVER,
       durationMinutes: null,
       distanceMeters: null,
+      tollFare: null,
       option,
       status,
       message,
@@ -161,6 +165,7 @@ export class NaverDirectionClient extends AbstractDirectionClient {
       provider: MapProvider.NAVER,
       durationMinutes: null,
       distanceMeters: null,
+      tollFare: null,
       option,
       status: 'request_failed',
       message,

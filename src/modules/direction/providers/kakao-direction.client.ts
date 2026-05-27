@@ -25,6 +25,10 @@ type KakaoRouteResponse = {
     summary?: {
       distance?: number;
       duration?: number;
+      fare?: {
+        taxi?: number;
+        toll?: number;
+      };
     };
   }>;
 };
@@ -77,6 +81,7 @@ export class KakaoDirectionClient extends AbstractDirectionClient {
       const route = response.data.routes?.[0];
       const durationRaw = route?.summary?.duration ?? null;
       const distanceMeters = route?.summary?.distance ?? null;
+      const tollFare = route?.summary?.fare?.toll ?? null;
       const pathCoordinates = this.extractPathCoordinates(response.data);
       const durationRawUnit =
         durationRaw === null
@@ -95,6 +100,7 @@ export class KakaoDirectionClient extends AbstractDirectionClient {
         provider: MapProvider.KAKAO,
         durationMinutes,
         distanceMeters,
+        tollFare,
         option: input.option,
         status: durationRaw === null ? 'request_failed' : 'ok',
         message:
@@ -137,6 +143,7 @@ export class KakaoDirectionClient extends AbstractDirectionClient {
       provider: MapProvider.KAKAO,
       durationMinutes: null,
       distanceMeters: null,
+      tollFare: null,
       option,
       status,
       message,
@@ -175,6 +182,7 @@ export class KakaoDirectionClient extends AbstractDirectionClient {
       provider: MapProvider.KAKAO,
       durationMinutes: null,
       distanceMeters: null,
+      tollFare: null,
       option,
       status: 'request_failed',
       message,

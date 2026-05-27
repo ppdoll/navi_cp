@@ -16,6 +16,7 @@ export type ProviderRouteResult = {
   provider: MapProvider;
   durationMinutes: number | null;
   distanceMeters: number | null;
+  tollFare: number | null;
   option: RouteOption;
   status: ProviderRouteStatus;
   message?: string;

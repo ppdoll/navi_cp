@@ -21,6 +21,7 @@ type TmapRouteResponse = {
     properties?: {
       totalDistance?: number;
       totalTime?: number;
+      totalFare?: number;
     };
   }>;
 };
@@ -86,6 +87,7 @@ export class TmapDirectionClient extends AbstractDirectionClient {
 
       const durationSeconds = summary?.totalTime ?? null;
       const distanceMeters = summary?.totalDistance ?? null;
+      const tollFare = summary?.totalFare ?? null;
       const pathCoordinates = this.extractPathCoordinates(response.data);
 
       return {
@@ -95,6 +97,7 @@ export class TmapDirectionClient extends AbstractDirectionClient {
             ? null
             : Number((durationSeconds / 60).toFixed(1)),
         distanceMeters,
+        tollFare,
         option: input.option,
         status: durationSeconds === null ? 'request_failed' : 'ok',
         message:
@@ -137,6 +140,7 @@ export class TmapDirectionClient extends AbstractDirectionClient {
       provider: MapProvider.TMAP,
       durationMinutes: null,
       distanceMeters: null,
+      tollFare: null,
       option,
       status,
       message,
@@ -168,6 +172,7 @@ export class TmapDirectionClient extends AbstractDirectionClient {
       provider: MapProvider.TMAP,
       durationMinutes: null,
       distanceMeters: null,
+      tollFare: null,
       option,
       status: 'request_failed',
       message: providerMessage,
