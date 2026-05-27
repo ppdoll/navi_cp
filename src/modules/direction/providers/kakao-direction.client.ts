@@ -84,7 +84,6 @@ export class KakaoDirectionClient extends AbstractDirectionClient {
       const durationRaw = route?.summary?.duration ?? null;
       const distanceMeters = route?.summary?.distance ?? null;
       const tollFare = route?.summary?.fare?.toll ?? null;
-      const highwayRatio = this.calcHighwayRatio(response.data, distanceMeters);
       const pathCoordinates = this.extractPathCoordinates(response.data);
       const durationRawUnit =
         durationRaw === null
@@ -104,7 +103,6 @@ export class KakaoDirectionClient extends AbstractDirectionClient {
         durationMinutes,
         distanceMeters,
         tollFare,
-        highwayRatio,
         option: input.option,
         status: durationRaw === null ? 'request_failed' : 'ok',
         message:
@@ -148,7 +146,7 @@ export class KakaoDirectionClient extends AbstractDirectionClient {
       durationMinutes: null,
       distanceMeters: null,
       tollFare: null,
-      highwayRatio: null,
+
       option,
       status,
       message,
@@ -188,7 +186,7 @@ export class KakaoDirectionClient extends AbstractDirectionClient {
       durationMinutes: null,
       distanceMeters: null,
       tollFare: null,
-      highwayRatio: null,
+
       option,
       status: 'request_failed',
       message,
@@ -210,23 +208,6 @@ export class KakaoDirectionClient extends AbstractDirectionClient {
         },
       },
     };
-  }
-
-  // road_code 1=고속도로, 2=도시고속도로
-  private calcHighwayRatio(
-    payload: KakaoRouteResponse,
-    totalDistance: number | null,
-  ): number | null {
-    if (!totalDistance || totalDistance === 0) return null;
-    let highwayDistance = 0;
-    for (const section of payload.routes?.[0]?.sections ?? []) {
-      for (const road of section.roads ?? []) {
-        if (road.road_code === 1 || road.road_code === 2) {
-          highwayDistance += road.distance ?? 0;
-        }
-      }
-    }
-    return Math.round((highwayDistance / totalDistance) * 1000) / 10;
   }
 
   private extractPathCoordinates(

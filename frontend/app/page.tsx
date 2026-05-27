@@ -11,7 +11,6 @@ type RouteItem = {
   durationMinutes: number | null;
   distanceMeters: number | null;
   tollFare: number | null;
-  highwayRatio: number | null;
   option: string;
   status: 'ok' | 'missing_api_key' | 'not_configured' | 'request_failed';
   message?: string;
@@ -489,7 +488,6 @@ export default function Page() {
                 <p>소요 시간: {route.durationMinutes ?? '-'}분</p>
                 <p>거리: {toKm(route.distanceMeters)}</p>
                 <p>톨비: {route.tollFare != null ? `${route.tollFare.toLocaleString()}원` : '-'}</p>
-                <p>고속도로 비율: {route.highwayRatio != null ? `${route.highwayRatio}%` : '-'}</p>
                 <p>경로 포인트 수: {route.pathCoordinates?.length ?? 0}</p>
                 {route.message ? <p className="message">{route.message}</p> : null}
 

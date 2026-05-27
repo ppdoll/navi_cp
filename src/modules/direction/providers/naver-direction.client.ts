@@ -79,7 +79,6 @@ export class NaverDirectionClient extends AbstractDirectionClient {
       const durationMs = route?.summary?.duration ?? null;
       const distanceMeters = route?.summary?.distance ?? null;
       const tollFare = route?.summary?.tollFare ?? null;
-      const highwayRatio = this.calcHighwayRatio(route?.guide ?? [], distanceMeters);
       const pathCoordinates =
         route?.path?.map((point) => [point[1], point[0]] as [number, number]) ?? [];
 
@@ -91,7 +90,6 @@ export class NaverDirectionClient extends AbstractDirectionClient {
             : Number((durationMs / 60000).toFixed(1)),
         distanceMeters,
         tollFare,
-        highwayRatio,
         option: input.option,
         status: durationMs === null ? 'request_failed' : 'ok',
         message:
@@ -135,7 +133,7 @@ export class NaverDirectionClient extends AbstractDirectionClient {
       durationMinutes: null,
       distanceMeters: null,
       tollFare: null,
-      highwayRatio: null,
+
       option,
       status,
       message,
@@ -173,7 +171,7 @@ export class NaverDirectionClient extends AbstractDirectionClient {
       durationMinutes: null,
       distanceMeters: null,
       tollFare: null,
-      highwayRatio: null,
+
       option,
       status: 'request_failed',
       message,
@@ -192,20 +190,4 @@ export class NaverDirectionClient extends AbstractDirectionClient {
     };
   }
 
-  // guide type 50=고속도로 진입, 51=탈출, 52/53=고속도로 내 분기점
-  private calcHighwayRatio(
-    guides: Array<{ type?: number; distance?: number }>,
-    totalDistance: number | null,
-  ): number | null {
-    if (!totalDistance || totalDistance === 0 || guides.length === 0) return null;
-    let isOnHighway = false;
-    let highwayDistance = 0;
-    for (const guide of guides) {
-      if (isOnHighway) highwayDistance += guide.distance ?? 0;
-      const type = guide.type ?? 0;
-      if (type === 50 || type === 52 || type === 53) isOnHighway = true;
-      else if (type === 51) isOnHighway = false;
-    }
-    return Math.round((highwayDistance / totalDistance) * 1000) / 10;
-  }
 }
