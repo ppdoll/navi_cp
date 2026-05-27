@@ -10,9 +10,9 @@ type RouteItem = {
 };
 
 const providerColor: Record<Provider, string> = {
-  NAVER: '#00a83f',
-  KAKAO: '#f2c200',
-  TMAP: '#2c7be5',
+  NAVER: '#00d94a',
+  KAKAO: '#ffe600',
+  TMAP: '#1a6dff',
 };
 
 // 30px 주기로 엇갈린 dash — 겹치는 구간에서 줄무늬 효과
@@ -56,7 +56,7 @@ export default function RouteMap({
             positions={route.pathCoordinates}
             pathOptions={{
               color: providerColor[route.provider],
-              weight: selectedProvider === 'ALL' ? 4 : 6,
+              weight: selectedProvider === 'ALL' ? 5 : 6,
               ...(selectedProvider === 'ALL' ? allModeDash[route.provider] : {}),
             }}
           />
