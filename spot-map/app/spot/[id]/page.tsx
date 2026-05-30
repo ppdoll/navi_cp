@@ -10,14 +10,22 @@ import type { SpotDetail } from '@/lib/types';
 
 const SpotMap = dynamic(() => import('@/app/components/SpotMap'), { ssr: false });
 
-function ReviewCard({ review }: { review: SpotDetail['reviews'][number] }) {
+function ReviewCard({ review, spotId }: { review: SpotDetail['reviews'][number]; spotId: string }) {
   return (
     <div className="border rounded-xl p-3 space-y-1.5">
       <div className="flex items-center justify-between">
         <StarRating value={review.rating} readonly size="sm" />
-        <span className="text-xs text-gray-400">
-          {new Date(review.createdAt).toLocaleDateString('ko-KR')}
-        </span>
+        <div className="flex items-center gap-2">
+          <span className="text-xs text-gray-400">
+            {new Date(review.createdAt).toLocaleDateString('ko-KR')}
+          </span>
+          <Link
+            href={`/spot/${spotId}/report?reviewId=${review.id}`}
+            className="text-xs text-gray-400 hover:text-red-400 transition-colors"
+          >
+            🚩
+          </Link>
+        </div>
       </div>
       {review.attributes.triesCount != null && (
         <p className="text-sm text-gray-700">
@@ -71,12 +79,27 @@ export default function SpotDetailPage() {
       <header className="bg-white border-b shadow-sm px-4 py-3 flex items-center gap-3">
         <Link href="/" className="text-gray-400 hover:text-gray-600 text-sm">← 목록으로</Link>
         <h1 className="text-lg font-bold text-pink-600 flex-1 truncate">{spot.name}</h1>
-        <Link
-          href={`/spot/${id}/review`}
-          className="bg-pink-500 hover:bg-pink-600 text-white text-sm font-semibold px-3 py-1.5 rounded-full transition-colors flex-shrink-0"
-        >
-          후기 작성
-        </Link>
+        <div className="flex items-center gap-2 flex-shrink-0">
+          <Link
+            href={`/spot/${id}/edit`}
+            className="bg-amber-400 hover:bg-amber-500 text-white text-sm font-semibold px-3 py-1.5 rounded-full transition-colors"
+          >
+            수정 요청
+          </Link>
+          <Link
+            href={`/spot/${id}/report`}
+            className="text-gray-400 hover:text-red-400 text-sm transition-colors"
+            title="신고하기"
+          >
+            🚩
+          </Link>
+          <Link
+            href={`/spot/${id}/review`}
+            className="bg-pink-500 hover:bg-pink-600 text-white text-sm font-semibold px-3 py-1.5 rounded-full transition-colors"
+          >
+            후기 작성
+          </Link>
+        </div>
       </header>
 
       <div className="max-w-2xl mx-auto p-4 space-y-4">
@@ -170,7 +193,7 @@ export default function SpotDetailPage() {
               아직 후기가 없습니다. 첫 번째 후기를 남겨보세요!
             </div>
           ) : (
-            spot.reviews.map((r) => <ReviewCard key={r.id} review={r} />)
+            spot.reviews.map((r) => <ReviewCard key={r.id} review={r} spotId={id} />)
           )}
         </div>
       </div>

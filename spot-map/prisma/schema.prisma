@@ -8,19 +8,21 @@ datasource db {
 }
 
 model Spot {
-  id           String   @id @default(cuid())
+  id           String            @id @default(cuid())
   name         String
   address      String
   latitude     Float
   longitude    Float
-  category     String   @default("claw_machine")
+  category     String            @default("claw_machine")
   // JSON-encoded: { machineCount, dollTypes, pricePerPlay, winProbability }
   attributes   String
-  ratingSum    Float    @default(0)
-  reviewCount  Int      @default(0)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  ratingSum    Float             @default(0)
+  reviewCount  Int               @default(0)
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
   reviews      Review[]
+  editRequests SpotEditRequest[]
+  reports      Report[]
 }
 
 model Review {
@@ -32,4 +34,35 @@ model Review {
   // JSON-encoded: { triesCount, dollTypes }
   attributes String
   createdAt  DateTime @default(now())
+  reports    Report[]
+}
+
+// User-submitted edit requests for a spot (go to admin for review)
+model SpotEditRequest {
+  id         String    @id @default(cuid())
+  spotId     String
+  spot       Spot      @relation(fields: [spotId], references: [id], onDelete: Cascade)
+  // JSON-encoded: same shape as spot fields (name, address, latitude, longitude, attributes)
+  proposed   String
+  reason     String?
+  status     String    @default("pending") // pending | approved | rejected
+  adminNote  String?
+  createdAt  DateTime  @default(now())
+  reviewedAt DateTime?
+}
+
+// Reports for spots or reviews
+model Report {
+  id         String    @id @default(cuid())
+  targetType String    // "spot" | "review"
+  spotId     String?
+  spot       Spot?     @relation(fields: [spotId], references: [id], onDelete: Cascade)
+  reviewId   String?
+  review     Review?   @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  reason     String
+  detail     String?
+  status     String    @default("pending") // pending | resolved | dismissed
+  adminNote  String?
+  createdAt  DateTime  @default(now())
+  reviewedAt DateTime?
 }
