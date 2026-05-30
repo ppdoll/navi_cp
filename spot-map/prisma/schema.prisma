@@ -1,0 +1,35 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Spot {
+  id           String   @id @default(cuid())
+  name         String
+  address      String
+  latitude     Float
+  longitude    Float
+  category     String   @default("claw_machine")
+  // JSON-encoded: { machineCount, dollTypes, pricePerPlay, winProbability }
+  attributes   String
+  ratingSum    Float    @default(0)
+  reviewCount  Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  reviews      Review[]
+}
+
+model Review {
+  id         String   @id @default(cuid())
+  spotId     String
+  spot       Spot     @relation(fields: [spotId], references: [id], onDelete: Cascade)
+  rating     Int
+  comment    String?
+  // JSON-encoded: { triesCount, dollTypes }
+  attributes String
+  createdAt  DateTime @default(now())
+}

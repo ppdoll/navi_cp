@@ -10,3 +10,8 @@ src/config/env/.local.env
 src/config/env/.live.env
 .env
 .env.*
+spot-map/.next/
+spot-map/node_modules/
+spot-map/.env
+spot-map/prisma/dev.db
+spot-map/prisma/dev.db-journal
