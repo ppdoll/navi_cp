@@ -116,6 +116,7 @@ function buildExternalLinks(
       app: `kakaomap://route?sp=${oLat},${oLng}&ep=${dLat},${dLng}&by=CAR`,
       site: `https://map.kakao.com/?sX=${oLng}&sY=${oLat}&eX=${dLng}&eY=${dLat}&by=CAR`,
     };
+    
   }
 
   return {

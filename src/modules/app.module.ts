@@ -1,9 +1,10 @@
-import { Module } from '@nestjs/common';
+﻿import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import * as path from 'node:path';
 import { envValidationSchema } from '../config/env/env.validation';
 import { DirectionModule } from './direction/direction.module';
 import { HealthController } from './health.controller';
+import { CarCompareModule } from './car-compare/car-compare.module';
 import { SearchModule } from './search/search.module';
 
 @Module({
@@ -19,7 +20,9 @@ import { SearchModule } from './search/search.module';
     }),
     DirectionModule,
     SearchModule,
+    CarCompareModule,
   ],
   controllers: [HealthController],
 })
 export class AppModule {}
+
