@@ -684,10 +684,17 @@ button:disabled {
   font-weight: 400;
 }
 
-.cars-site-label span {
+.cars-site-label span,
+.cars-site-link {
   font-size: 0.82rem;
   font-weight: 600;
   color: var(--muted);
+  text-decoration: none;
+}
+
+.cars-site-link:hover {
+  color: var(--accent);
+  text-decoration: underline;
 }
 
 .cars-site-input {

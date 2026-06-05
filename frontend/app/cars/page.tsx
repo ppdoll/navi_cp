@@ -49,41 +49,38 @@ const SITES = [
   {
     key: 'heydealer',
     label: '헤이딜러',
+    href: 'https://www.heydealer.com/',
     placeholder: 'https://www.heydealer.com/market/cars/...',
-    sample: 'https://www.heydealer.com/market/cars/vlgoRWl0',
   },
   {
     key: 'encar',
     label: '엔카',
+    href: 'https://fem.encar.com/',
     placeholder: 'https://fem.encar.com/cars/detail/...',
-    sample:
-      'https://fem.encar.com/cars/detail/41199404?pageid=fc_carsearch&listAdvType=pic&carid=41199404&view_type=checked&wtClick_forList=033&advClickPosition=imp_pic_p1_g5',
   },
   {
     key: 'hyundai',
     label: '현대 인증중고차',
+    href: 'https://certified.hyundai.com/p/goods/goodsDetail.do?goodsNo=GJK260514027744',
     placeholder: 'https://certified.hyundai.com/...',
-    sample: 'https://certified.hyundai.com/p/goods/goodsDetail.do?goodsNo=GJK260514027744',
   },
   {
     key: 'kia',
     label: '기아 인증중고차',
+    href: 'https://cpo.kia.com/',
     placeholder: 'https://cpo.kia.com/products/detail/...',
-    sample: 'https://cpo.kia.com/products/detail/?id=12227',
   },
   {
     key: 'bmw',
     label: 'BMW 인증중고차',
+    href: 'https://www.bmw.co.kr/',
     placeholder: 'https://www.bmw.co.kr/ko-kr/sl/usedcarfinder/...',
-    sample:
-      'https://www.bmw.co.kr/ko-kr/sl/usedcarfinder/details/019a4e1a-d6c3-74b3-820b-143326294a2f?filters=%257B%2522IS_INSTALLMENT%2522%253Afalse%257D&sorting=PRODUCTION_DATE_DESC&modelCode=71GP&paint=P0C4P&fabric=FVCJL&modelRangeCode=G45&options=S05DW,S03MF,S04NW,S03DP,S06NX,S07M9,S0Z9C,S08KH,S0710,S03N2,S08WM,S0552,S0993,S09TA,S09TB,S02VL,S08AF,S02VB,S01D1,S08R9,S02VD,S01CR,S02VF,S033B,S04NR,S03M2,S0548,S0867,S0428,S04FL,S0775,S0534,S09T1,S09T2,S06AC,S0459,S06AE,S0417,S01CB,S04UR,S0453,S01CE,S06PA,S07EW,S05AU,S08TF,S08SX,S04GQ,S02TE,S07VB,S0248,S0688,S0402,S04U9,S043W,S0802,S0925,S0481,S04HA,S0760,S0322,S0488,S06U3',
   },
   {
     key: 'benz',
     label: '벤츠 인증중고차',
+    href: 'https://www.mercedes-benz.co.kr/',
     placeholder: 'https://www.mercedes-benz.co.kr/...',
-    sample:
-      'https://www.mercedes-benz.co.kr/passengercars/buy/used-car/product.html/KR2600203358T',
   },
 ] as const;
 
@@ -135,14 +132,6 @@ export default function CarsPage() {
 
   function setUrl(key: string, value: string) {
     setSiteUrls((prev) => ({ ...prev, [key]: value }));
-  }
-
-  function fillSamples() {
-    const samples: Record<string, string> = {};
-    for (const site of SITES) {
-      samples[site.key] = site.sample;
-    }
-    setSiteUrls(samples);
   }
 
   async function compareUrls() {
@@ -203,15 +192,14 @@ export default function CarsPage() {
               <h2>비교할 URL</h2>
               <p>비교할 사이트의 URL만 입력하면 됩니다.</p>
             </div>
-            <button type="button" className="cars-ghost-button" onClick={fillSamples}>
-              샘플 채우기
-            </button>
           </div>
 
           <div className="cars-site-inputs">
             {SITES.map((site) => (
               <label key={site.key} className="cars-site-label">
-                <span>{site.label}</span>
+                <a href={site.href} target="_blank" rel="noreferrer" className="cars-site-link">
+                  {site.label}
+                </a>
                 <input
                   type="url"
                   className="cars-site-input"
