@@ -79,7 +79,7 @@ const SITES = [
   {
     key: 'benz',
     label: '벤츠 인증중고차',
-    href: 'https://www.mercedes-benz.co.kr/',
+    href: 'https://www.mercedes-benz.co.kr/passengercars/buy/used-car/search-results.html/vehicleCategory-passenger-cars/sortType-registrationYear-desc',
     placeholder: 'https://www.mercedes-benz.co.kr/...',
   },
 ] as const;
