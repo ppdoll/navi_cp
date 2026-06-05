@@ -182,7 +182,7 @@ export default function CarsPage() {
     <main className="page cars-page">
       <section className="hero">
         <p className="eyebrow">KR Tools · Cars</p>
-        <h1>중고차 URL 비교</h1>
+        <h1>중고차 비교</h1>
         <p>
           헤이딜러, 엔카, 현대 인증중고차, 기아 인증중고차, BMW 인증중고차, 벤츠 인증중고차 URL을
           넣으면 모델명, 연식, 가격, 사고여부, 사고이력, 스펙을 한 화면에서 비교합니다.
